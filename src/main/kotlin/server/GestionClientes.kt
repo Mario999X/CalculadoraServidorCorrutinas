@@ -18,7 +18,8 @@ class GestionClientes(private val socket: Socket) {
 
         val procesarOperacion = launch {
             log.debug { "Recibiendo operacion" }
-            
+
+            // Pasar a JSON el objeto operacion
         }
     }
 }
