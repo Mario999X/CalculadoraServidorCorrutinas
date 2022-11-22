@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import model.Operacion
@@ -42,6 +43,14 @@ fun main() = runBlocking {
     val entrada = socket.openReadChannel()
     val salida = socket.openWriteChannel(true)
 
+    // Esperamos recibir el historial por parte del servidor
+    log.debug { "Esperando el historial..." }
+    val responseHistorial = entrada.readUTF8Line()
+    //println(responseHistorial)
+
+    val historial = json.decodeFromString<List<Operacion>>(responseHistorial!!)
+    log.debug { "Historial: $historial" }
+
     // Lanzamos la corrutina que envia el objeto operacion
     val envioOperacion = launch {
         log.debug { "Lanzada corrutina de envio de operaciones" }
@@ -52,7 +61,7 @@ fun main() = runBlocking {
             type = Request.Type.SEND
         )
         // Lo preparamos, y lo mandamos como un json
-        salida.writeStringUtf8(json.encodeToString(request) + "\n")
+        salida.writeStringUtf8(json.encodeToString(request) + "\n") // Añadimos el salto de línea para que se envíe
         log.debug { "$operacion enviada con exito, esperando solucion..." }
     }
 
