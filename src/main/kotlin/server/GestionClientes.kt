@@ -20,6 +20,7 @@ class GestionClientes(private val socket: Socket) {
             log.debug { "Recibiendo operacion" }
 
             // Pasar a JSON el objeto operacion
+
         }
     }
 }

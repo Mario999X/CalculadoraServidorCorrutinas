@@ -32,8 +32,9 @@ class Servidor {
 
             // Lo desviamos al gestor de clientes, usando una corrutina
             launch {
-
+                GestionClientes(socket)
             }
+
         }
     }
 
