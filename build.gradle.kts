@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.21"
+    // para serializar Json y otros
+    kotlin("plugin.serialization") version "1.7.21"
 }
 
 group = "org.example"
@@ -20,6 +22,8 @@ dependencies {
     // Para hacer logs
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
     implementation("ch.qos.logback:logback-classic:1.4.4")
+    // Serializa Json
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 }
 
 tasks.test {
