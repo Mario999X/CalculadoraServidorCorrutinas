@@ -16,10 +16,10 @@ fun main() = runBlocking {
     // Dispacher para el servidor IO = Manager
     val selectorManager = SelectorManager(Dispatchers.IO)
 
+    log.debug { "Arrancando servidor..." }
+
     // Socket TCP
     val serverSocket = aSocket(selectorManager).tcp().bind("localhost", PUERTO)
-
-    log.debug { "Arrancando servidor..." }
 
     while (true) {
         log.debug { "\t--Servidor esperando..." }

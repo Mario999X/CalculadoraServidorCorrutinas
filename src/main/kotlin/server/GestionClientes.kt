@@ -28,14 +28,20 @@ class GestionClientes(private val socket: Socket) {
         val procesarOperacion = launch {
             log.debug { "Recibiendo operacion" }
 
+            // Recibimos el dato del cliente
             val input = entrada.readUTF8Line()
             log.debug { "Se ha recibido un mensaje: $input" }
 
+            // json recogido
             input?.let {
+                // Lo decodificamos
                 val request = json.decodeFromString<Request<Operacion>>(input)
+                //println(request)
 
+                // Segun el tipo de request, se ejecutara una parte del codigo o otra (solo 1 caso en este problema)
                 when (request.type) {
                     Request.Type.SEND -> {
+                        // Al recibir este tipo, se pilla el contenido y se transforma en una Operacion
                         log.debug { "Se ha recibido una operacion... " }
                         val op = request.content as Operacion
 
@@ -51,16 +57,21 @@ class GestionClientes(private val socket: Socket) {
                             0
                         }
 
-                        log.debug { "Resultado obtenido: $request" }
+                        // Se obtiene el resultado, y es enviado en un String por el canal de salida
+                        log.debug { "Resultado obtenido: $result" }
 
                         respuesta = result.toString()
                         salida.writeStringUtf8(respuesta)
 
                         log.debug { "Resultado enviado" }
                     }
+                    /*else -> {
+                        log.debug { "Tipo no identificado" }
+                    }*/
                 }
             }
         }
+        // Terminamos la corrutina y cerramos lo necesario.
         procesarOperacion.join()
 
         log.debug { "Cerrando conexion" }
