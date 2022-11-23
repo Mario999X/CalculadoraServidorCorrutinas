@@ -21,7 +21,7 @@ object Cache {
 
     val operaciones: SharedFlow<Operacion> get() = _operaciones.asSharedFlow()
 
-    private var _recibidos = AtomicInteger(0)
+    private var _recibidos = AtomicInteger(0) // Nos permite evitar, junto al IF en el Gestor, que se trate de tomar.
     val size
         get() = if (_recibidos.get() > LIMITE_HISTORIAL) LIMITE_HISTORIAL else _recibidos.get()
 
